@@ -1,0 +1,24 @@
+{
+  "name": "enquete_api",
+  "version": "1.0.0",
+  "description": "API de enquetes para o mundo dos programadores",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanLivassan/enquete_api.git"
+  },
+  "keywords": [
+    "enquete",
+    "node",
+    "api"
+  ],
+  "author": "Danilo Santana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DanLivassan/enquete_api/issues"
+  },
+  "homepage": "https://github.com/DanLivassan/enquete_api#readme"
+}
