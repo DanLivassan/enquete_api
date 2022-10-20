@@ -4,7 +4,7 @@
   "description": "API de enquetes para o mundo dos programadores",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
