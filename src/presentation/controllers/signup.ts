@@ -7,13 +7,17 @@ import {
 export class SignUpController implements Controller {
   constructor() {}
   handle(request: HttpRequest): Promise<HttpResponse> {
-    const { name } = request.data;
+    const { name, email } = request.data;
     if (!name)
       return new Promise((resolve) => {
-        resolve({ statusCode: 400 });
+        resolve({ statusCode: 400, body: "Missing param: name" });
+      });
+    if (!email)
+      return new Promise((resolve) => {
+        resolve({ statusCode: 400, body: "Missing param: email" });
       });
     return new Promise((resolve) => {
-      resolve({ statusCode: 500 });
+      resolve({ statusCode: 500, body: "Internal server error" });
     });
   }
 }

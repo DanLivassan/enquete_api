@@ -7,7 +7,17 @@ describe("SignUpController tests", () => {
   });
   test("should return 400 (bad request) if no name provided", async () => {
     const sut = new SignUpController();
-    const resp = await sut.handle({ data: { name: undefined } });
+    const resp = await sut.handle({
+      data: { name: undefined, email: "email" },
+    });
     expect(resp.statusCode).toBe(400);
+    expect(resp.body).toEqual("Missing param: name");
+  });
+
+  test("should return 400 (bad request) if no email provided", async () => {
+    const sut = new SignUpController();
+    const resp = await sut.handle({ data: { email: undefined, name: "name" } });
+    expect(resp.statusCode).toBe(400);
+    expect(resp.body).toEqual("Missing param: email");
   });
 });
