@@ -1,3 +1,4 @@
+import { HttpRequest } from "../../protocol/http";
 import { MissingParamError } from "../errors/missing-param-errors";
 import { SignUpController } from "./signup";
 
@@ -6,19 +7,29 @@ describe("SignUpController tests", () => {
     const sut = new SignUpController();
     expect(sut).not.toBe(undefined);
   });
-  test("should return 400 (bad request) if no name provided", async () => {
+  test("should return 400 (bad request) if some required field not provided", async () => {
+    const requiredFields = [
+      "name",
+      "email",
+      "password",
+      "passwordConfirmation",
+    ];
     const sut = new SignUpController();
-    const resp = await sut.handle({
-      data: { name: undefined, email: "email" },
-    });
-    expect(resp.statusCode).toBe(400);
-    expect(resp.body).toEqual(new MissingParamError("name"));
-  });
-
-  test("should return 400 (bad request) if no email provided", async () => {
-    const sut = new SignUpController();
-    const resp = await sut.handle({ data: { email: undefined, name: "name" } });
-    expect(resp.statusCode).toBe(400);
-    expect(resp.body).toEqual(new MissingParamError("email"));
+    for (const field of requiredFields) {
+      let httpRequest: HttpRequest = {
+        data: {
+          name: "name",
+          email: "email",
+          password: "password",
+          passwordConfirmation: "password",
+        },
+      };
+      httpRequest = {
+        ...httpRequest,
+        data: { ...httpRequest.data, [field]: undefined },
+      };
+      const resp = await sut.handle(httpRequest);
+      expect(resp.body).toEqual(new MissingParamError(field));
+    }
   });
 });
