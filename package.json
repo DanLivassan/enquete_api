@@ -4,7 +4,8 @@
   "description": "API de enquetes para o mundo dos programadores",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
