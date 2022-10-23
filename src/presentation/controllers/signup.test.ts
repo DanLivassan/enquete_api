@@ -2,9 +2,13 @@ import { HttpRequest } from "../../protocol/http";
 import { MissingParamError } from "../errors/missing-param-errors";
 import { SignUpController } from "./signup";
 
+const makeSut = (): { sut: SignUpController } => {
+  const sut = new SignUpController();
+  return { sut };
+};
 describe("SignUpController tests", () => {
   test("should be able to create the signUpController", () => {
-    const sut = new SignUpController();
+    const { sut } = makeSut();
     expect(sut).not.toBe(undefined);
   });
   test("should return 400 (bad request) if some required field not provided", async () => {
@@ -14,7 +18,7 @@ describe("SignUpController tests", () => {
       "password",
       "passwordConfirmation",
     ];
-    const sut = new SignUpController();
+    const { sut } = makeSut();
     for (const field of requiredFields) {
       let httpRequest: HttpRequest = {
         data: {

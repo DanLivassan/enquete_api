@@ -4,7 +4,8 @@
   "description": "API de enquetes para o mundo dos programadores",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
+    "test-dev": "jest --watch",
     "prepare": "husky install"
   },
   "repository": {
@@ -38,5 +39,8 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "mkdirp": "^1.0.4"
   }
 }
