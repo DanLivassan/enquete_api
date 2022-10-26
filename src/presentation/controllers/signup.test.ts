@@ -17,6 +17,7 @@ const makeSut = (): {
   const sut = new SignUpController(emailValidatorStub)
   return { sut, emailValidator: emailValidatorStub }
 }
+
 describe('SignUpController tests', () => {
   test('should be able to create the signUpController', () => {
     const { sut } = makeSut()
@@ -60,5 +61,19 @@ describe('SignUpController tests', () => {
     }
     const resp = await sut.handle(httpRequest)
     expect(resp.body).toEqual(new InvalidParamError('email'))
+  })
+  test('should call isValid with the correct email', async () => {
+    const { sut, emailValidator } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+    const httpRequest: HttpRequest = {
+      data: {
+        name: 'name',
+        email: 'email@email.com',
+        password: 'password',
+        passwordConfirmation: 'password'
+      }
+    }
+    await sut.handle(httpRequest)
+    expect(isValidSpy).toBeCalledWith('email@email.com')
   })
 })
