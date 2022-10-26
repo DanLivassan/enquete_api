@@ -1,9 +1,10 @@
+import { AddAccountUseCase } from '../../domain/usecases/add-account'
 import { badRequest, serverError } from '../../helpers/http.helper'
 import { EmailValidator } from '../../protocol/email-validator'
 import { Controller, HttpRequest, HttpResponse } from '../../protocol/http'
 
 export class SignUpController implements Controller {
-  constructor (private readonly emailValidator: EmailValidator) { }
+  constructor (private readonly emailValidator: EmailValidator, private readonly addAcountUseCase: AddAccountUseCase) { }
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredFields = [
@@ -30,9 +31,13 @@ export class SignUpController implements Controller {
         resolve(serverError('Internal server error'))
       })
     }
+    const { email, name, password } = request.data
+    const resp = await this.addAcountUseCase.add({
+      email, name, password
+    })
 
     return await new Promise((resolve) => {
-      resolve({ statusCode: 500, body: 'Internal server error' })
+      resolve({ statusCode: 201, body: JSON.stringify(resp) })
     })
   }
 }
