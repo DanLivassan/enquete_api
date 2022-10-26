@@ -1,5 +1,6 @@
 import { InvalidParamError } from '../presentation/errors/invalid-param-error'
 import { MissingParamError } from '../presentation/errors/missing-param-errors'
+import { ServerError } from '../presentation/errors/server-error'
 import { HttpResponse } from '../protocol/http'
 
 export const badRequest = (
@@ -20,4 +21,13 @@ export const badRequest = (
     }
   }
   throw Error('bad request')
+}
+
+export const serverError = (
+  paramName: string
+): HttpResponse => {
+  return {
+    statusCode: 500,
+    body: new ServerError(paramName)
+  }
 }

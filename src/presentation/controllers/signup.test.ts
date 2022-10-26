@@ -2,6 +2,7 @@ import { EmailValidator } from '../../protocol/email-validator'
 import { HttpRequest } from '../../protocol/http'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-errors'
+import { ServerError } from '../errors/server-error'
 import { SignUpController } from './signup'
 
 const makeSut = (): {
@@ -75,5 +76,24 @@ describe('SignUpController tests', () => {
     }
     await sut.handle(httpRequest)
     expect(isValidSpy).toBeCalledWith('email@email.com')
+  })
+
+  test('should return an error 500 if emailValidator throws', async () => {
+    const { sut, emailValidator } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+    isValidSpy.mockImplementationOnce(() => {
+      throw Error('Some error')
+    })
+    const httpRequest: HttpRequest = {
+      data: {
+        name: 'name',
+        email: 'email@email.com',
+        password: 'password',
+        passwordConfirmation: 'password'
+      }
+    }
+    const resp = await sut.handle(httpRequest)
+    expect(resp.statusCode).toBe(500)
+    expect(resp.body).toEqual(new ServerError('Internal server error'))
   })
 })
