@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "test-dev": "jest --watch",
-    "lint":"eslint src/** --fix",
+    "lint": "eslint src/** --fix",
     "prepare": "husky install"
   },
   "repository": {
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.3",
+    "@types/validator": "^13.7.9",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "eslint": "^8.25.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
@@ -42,6 +43,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "mkdirp": "^1.0.4"
+    "mkdirp": "^1.0.4",
+    "validator": "^13.7.0"
   }
 }
