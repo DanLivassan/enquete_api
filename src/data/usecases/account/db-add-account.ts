@@ -7,7 +7,7 @@ export class DbAddAccount implements AddAccountUseCase {
   constructor (private readonly encrypter: Encrypter, private readonly addAccountRepo: AddAccountRepo) {}
 
   async add (account: AddAccountModel): Promise<AccountModel> {
-    account.password = await this.encrypter.encrypt(account.password)
-    return await this.addAccountRepo.add(account)
+    const hashedPassword = await this.encrypter.encrypt(account.password)
+    return await this.addAccountRepo.add({ ...account, password: hashedPassword })
   }
 }

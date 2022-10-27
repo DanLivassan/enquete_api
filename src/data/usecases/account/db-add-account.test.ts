@@ -43,11 +43,12 @@ describe('DbAddAccount UseCase', () => {
     expect(encryptSpy).toBeCalledWith('valid_pass')
   })
 
-  test('should add account with encrypted data ', async () => {
+  test('should add account with encrypted data and return the object', async () => {
     const { dbAddAccount, addAccountRepoStub } = makeSut()
     const addSpy = jest.spyOn(addAccountRepoStub, 'add')
     const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
-    await dbAddAccount.add(accountData)
+    const resp = await dbAddAccount.add(accountData)
     expect(addSpy).toBeCalledWith({ name: 'name', email: 'email@mail.com', password: 'hashed_value' })
+    expect(resp.id).toBeTruthy()
   })
 })
