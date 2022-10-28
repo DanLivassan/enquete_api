@@ -4,15 +4,15 @@
  */
 
 export default {
-  roots: ["<rootDir>/src"],
+  roots: ['<rootDir>/src'],
   collectCoverage: true,
 
-  collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 
-  coverageDirectory: "coverage",
-  testEnvironment: "node",
+  coverageDirectory: 'coverage',
+  testEnvironment: 'node',
+  preset: '@shelf/jest-mongodb',
+  coverageProvider: 'v8',
 
-  coverageProvider: "v8",
-
-  transform: { "^.+\\.ts?$": "ts-jest" },
-};
+  transform: { '^.+\\.ts?$': 'ts-jest' }
+}
