@@ -4,8 +4,10 @@
   "description": "API de enquetes para o mundo dos programadores",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test-dev": "jest --watch",
+    "test": "jest --passWithNoTests --silent --noStackTrace",
+    "test:dev": "jest --watch",
+    "test:unit": "yarn test -c jest.unit.config.ts",
+    "test:int": "yarn test -c jest.int.config.ts",
     "lint": "eslint src/** --fix",
     "prepare": "husky install",
     "start": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/main/server.ts"
