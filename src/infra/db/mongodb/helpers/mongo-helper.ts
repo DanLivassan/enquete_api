@@ -1,6 +1,6 @@
 import { Collection, MongoClient, Document } from 'mongodb'
-
-const mongoDbClient = new MongoClient(process.env.MONGO_URL as string)
+import env from '../../../../main/config/env'
+const mongoDbClient = new MongoClient(env.mongoUrl)
 
 export const MongoHelper = {
   client: null as unknown as MongoClient,
