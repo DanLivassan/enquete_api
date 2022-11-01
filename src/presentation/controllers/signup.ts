@@ -37,7 +37,7 @@ export class SignUpController implements Controller {
     })
 
     return await new Promise((resolve) => {
-      resolve({ statusCode: 201, body: JSON.stringify(resp) })
+      resolve({ statusCode: 201, body: resp })
     })
   }
 }

@@ -13,6 +13,6 @@ describe('Sign Up tests', () => {
     await request(app)
       .post('/signup')
       .send({ name: 'Danilo', email: 'danilo@mail.com', password: 'pass', passwordConfirmation: 'pass' })
-      .expect(200)
+      .expect(201)
   })
 })
