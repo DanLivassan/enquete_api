@@ -7,7 +7,7 @@ export class LoginController implements Controller {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredFields = [
-        'name',
+        'password',
         'email'
       ]
 
