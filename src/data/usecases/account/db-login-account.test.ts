@@ -4,6 +4,7 @@ import { Encrypter } from '../../protocols/encrypter'
 import { LoginAccountRepo } from '../../protocols/login-account-repo'
 import { DbLoginAccount } from './db-login-account'
 
+const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
 class EncrypterStub implements Encrypter {
   async encrypt (value: string): Promise<string> {
     return await new Promise(resolve => resolve('hashed_value'))
@@ -12,7 +13,7 @@ class EncrypterStub implements Encrypter {
 
 class LoginAccountRepoStub implements LoginAccountRepo {
   async login (accountModel: LoginAccountModel): Promise<AccountModel> {
-    return await new Promise(resolve => resolve({ email: 'email', id: 'id', name: 'name', password: '' }))
+    return await new Promise(resolve => resolve({ ...accountData, id: 'Id' }))
   }
 }
 
@@ -25,6 +26,7 @@ const makeSut = (): SutTypes => {
   const encrypterStub = new EncrypterStub()
   const loginRepo = new LoginAccountRepoStub()
   const sut = new DbLoginAccount(encrypterStub, loginRepo)
+
   return {
     sut,
     encrypterStub,
@@ -41,12 +43,9 @@ describe('Login Account UseCase', () => {
     expect(encryptSpy).toBeCalledWith('valid_pass')
   })
 
-  // test('should add account with encrypted data and return the object', async () => {
-  //   const { DbLoginAccount, addAccountRepoStub } = makeSut()
-  //   const addSpy = jest.spyOn(addAccountRepoStub, 'add')
-  //   const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
-  //   const resp = await DbLoginAccount.add(accountData)
-  //   expect(addSpy).toBeCalledWith({ name: 'name', email: 'email@mail.com', password: 'hashed_value' })
-  //   expect(resp.id).toBeTruthy()
-  // })
+  test('should return an object user given right credentials', async () => {
+    const { sut } = makeSut()
+    const resp = await sut.login({ email: accountData.email, password: accountData.password })
+    expect(resp).toEqual({ ...accountData, id: 'Id' })
+  })
 })
