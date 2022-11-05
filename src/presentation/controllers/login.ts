@@ -35,8 +35,6 @@ export class LoginController implements Controller {
         resolve(unauthorizedError())
       })
     }
-    return await new Promise((resolve) => {
-      resolve({ statusCode: 201, body: 'ok' })
-    })
+    return { statusCode: 200, body: authenticatedAccount }
   }
 }

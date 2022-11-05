@@ -69,4 +69,18 @@ describe('Login Controller', () => {
     expect(httpResponse.statusCode).toBe(401)
     expect(httpResponse.body).toEqual(new UnauthorizedError())
   })
+
+  test('should return 200 if correct credentials provided', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest: HttpRequest = {
+      data: {
+        email: 'email@mail.com',
+        password: '123'
+      }
+    }
+    const httpResponse: HttpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({ email: 'email@mail.com', id: 'id', name: 'name', password: 'password' })
+  })
 })
