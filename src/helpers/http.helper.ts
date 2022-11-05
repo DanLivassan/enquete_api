@@ -1,5 +1,6 @@
 
 import { InvalidParamError, MissingParamError, ServerError } from '../presentation/errors'
+import { UnauthorizedError } from '../presentation/errors/unauthorized-error'
 import { HttpResponse } from '../protocol/http'
 
 export const badRequest = (
@@ -28,5 +29,14 @@ export const serverError = (
   return {
     statusCode: 500,
     body: new ServerError(paramName)
+  }
+}
+
+export const unauthorizedError = (
+
+): HttpResponse => {
+  return {
+    statusCode: 401,
+    body: new UnauthorizedError()
   }
 }

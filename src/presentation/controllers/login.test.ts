@@ -1,11 +1,14 @@
+import { AccountModel } from '../../domain/models/account'
+import { LoginAccountModel, LoginAccountUseCase } from '../../domain/usecases/login-account'
 import { EmailValidator } from '../../protocol/email-validator'
 import { HttpRequest, HttpResponse } from '../../protocol/http'
-import { InvalidParamError } from '../errors'
+import { InvalidParamError, UnauthorizedError } from '../errors'
 import { LoginController } from './login'
 
 interface SutProps {
   sut: LoginController
   emailValidator: EmailValidator
+  loginAccountUseCaseStub: LoginAccountUseCase
 }
 const makeSut = (): SutProps => {
   class EmailValidatorStub implements EmailValidator {
@@ -13,10 +16,16 @@ const makeSut = (): SutProps => {
       return true
     }
   }
+  class LoginAccountUseCaseStub implements LoginAccountUseCase {
+    async login (account: LoginAccountModel): Promise<AccountModel | null> {
+      return { email: 'email@mail.com', id: 'id', name: 'name', password: 'password' }
+    }
+  }
   const emailValidator = new EmailValidatorStub()
-  const sut = new LoginController(emailValidator)
+  const loginAccountUseCaseStub = new LoginAccountUseCaseStub()
+  const sut = new LoginController(emailValidator, loginAccountUseCaseStub)
 
-  return { sut, emailValidator }
+  return { sut, emailValidator, loginAccountUseCaseStub }
 }
 describe('Login Controller', () => {
   test('should return 400 if no credentials provided', async () => {
@@ -43,5 +52,21 @@ describe('Login Controller', () => {
     expect(isValidSpy).toBeCalled()
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
+
+  test('should return 401 if wrong credentials provided', async () => {
+    const { sut, loginAccountUseCaseStub } = makeSut()
+
+    const loginSpy = jest.spyOn(loginAccountUseCaseStub, 'login').mockResolvedValueOnce(null)
+    const httpRequest: HttpRequest = {
+      data: {
+        email: 'email@mail.com',
+        password: '123'
+      }
+    }
+    const httpResponse: HttpResponse = await sut.handle(httpRequest)
+    expect(loginSpy).toBeCalled()
+    expect(httpResponse.statusCode).toBe(401)
+    expect(httpResponse.body).toEqual(new UnauthorizedError())
   })
 })
