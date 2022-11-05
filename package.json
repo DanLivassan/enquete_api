@@ -4,7 +4,7 @@
   "description": "API de enquetes para o mundo dos programadores",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --silent --noStackTrace",
+    "test": "jest --passWithNoTests",
     "test:dev": "jest --watch",
     "test:unit": "yarn test -c jest.unit.config.ts",
     "test:int": "yarn test -c jest.int.config.ts",

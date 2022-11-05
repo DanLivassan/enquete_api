@@ -5,4 +5,9 @@ export class BcryptAdapter implements Encrypter {
     const encryptedValue = await bcrypt.hash(value, 10)
     return encryptedValue
   }
+
+  async checkEncryption (value: string, encryptedValue: string): Promise<boolean> {
+    const isValid = await bcrypt.compare(value, encryptedValue)
+    return isValid
+  }
 }

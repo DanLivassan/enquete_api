@@ -9,6 +9,10 @@ class EncrypterStub implements Encrypter {
   async encrypt (value: string): Promise<string> {
     return await new Promise(resolve => resolve('hashed_value'))
   }
+
+  async checkEncryption (value: string, encryptedValud: string): Promise<boolean> {
+    return true
+  }
 }
 
 class LoginAccountRepoStub implements LoginAccountRepo {

@@ -17,10 +17,8 @@ export class AccountMongoRepository implements AddAccountRepo, LoginAccountRepo 
     const accountsCollection = MongoHelper.getCollection('accounts')
     const accountFound = await accountsCollection.findOne(
       {
-        $and: [
-          { email: accountModel.email },
-          { password: accountModel.password }
-        ]
+        email: accountModel.email
+
       }
     )
     if (accountFound == null) return null
