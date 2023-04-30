@@ -1,26 +1,16 @@
 
-import { InvalidParamError, MissingParamError, ServerError } from '../presentation/errors'
+import { ServerError } from '../presentation/errors'
 import { UnauthorizedError } from '../presentation/errors/unauthorized-error'
 import { HttpResponse } from '../protocol/http'
 
 export const badRequest = (
-  paramName: string,
-  typeError: 'MissingParam' | 'InvalidParam'
+  error: Error
 ): HttpResponse => {
-  if (typeError === 'MissingParam') {
-    return {
-      statusCode: 400,
-      body: new MissingParamError(paramName)
-    }
-  }
+  return {
+    body: { name: error.name, message: error.message },
 
-  if (typeError === 'InvalidParam') {
-    return {
-      statusCode: 400,
-      body: new InvalidParamError(paramName)
-    }
+    statusCode: 400
   }
-  throw Error('bad request')
 }
 
 export const serverError = (
