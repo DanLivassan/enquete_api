@@ -6,17 +6,17 @@ import { DbLoginAccount } from './db-login-account'
 
 const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
 class EncrypterStub implements Encrypter {
-  async encrypt (value: string): Promise<string> {
+  async encrypt(value: string): Promise<string> {
     return await new Promise(resolve => resolve('hashed_value'))
   }
 
-  async checkEncryption (value: string, encryptedValud: string): Promise<boolean> {
+  async checkEncryption(value: string, encryptedValud: string): Promise<boolean> {
     return true
   }
 }
 
 class LoginAccountRepoStub implements LoginAccountRepo {
-  async login (accountModel: LoginAccountModel): Promise<AccountModel> {
+  async login(accountModel: LoginAccountModel): Promise<AccountModel> {
     return await new Promise(resolve => resolve({ ...accountData, id: 'Id' }))
   }
 }
@@ -41,10 +41,10 @@ const makeSut = (): SutTypes => {
 describe('Login Account UseCase', () => {
   test('should call call encrypter on login before query db', async () => {
     const { sut, encrypterStub } = makeSut()
-    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
+    const encryptSpy = jest.spyOn(encrypterStub, 'checkEncryption')
     const accountData = { email: 'email@mail.com', password: 'valid_pass' }
     await sut.login(accountData)
-    expect(encryptSpy).toBeCalledWith('valid_pass')
+    expect(encryptSpy).toBeCalledWith('valid_pass', 'valid_pass')
   })
 
   test('should return an object user given right credentials', async () => {
