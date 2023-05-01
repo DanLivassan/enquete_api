@@ -10,9 +10,8 @@ interface SutProps {
   loginAccountUseCaseStub: LoginAccountUseCase
 }
 const makeSut = (): SutProps => {
-
   class LoginAccountUseCaseStub implements LoginAccountUseCase {
-    async login(account: LoginAccountModel): Promise<AccountModel | null> {
+    async login (account: LoginAccountModel): Promise<AccountModel | null> {
       return { email: 'email@mail.com', id: 'id', name: 'name', password: 'password' }
     }
   }
@@ -23,8 +22,6 @@ const makeSut = (): SutProps => {
   return { sut, loginAccountUseCaseStub }
 }
 describe('Login Controller', () => {
-
-
   test('should return 401 if wrong credentials provided', async () => {
     const { sut, loginAccountUseCaseStub } = makeSut()
 

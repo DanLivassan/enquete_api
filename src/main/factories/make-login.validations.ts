@@ -9,7 +9,7 @@ export const makeLoginValidations = (): ValidationComposite => {
     [
       new RequiredFieldValidation('email'),
       new RequiredFieldValidation('password'),
-      new EmailValidation('email', emailValidator),
+      new EmailValidation('email', emailValidator)
     ]
   )
 }

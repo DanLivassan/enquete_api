@@ -6,13 +6,13 @@ import { DbAddAccount } from './db-add-account'
 
 class EncrypterStub implements Encrypter {
   checkEncryption: (value: string, encryptedValud: string) => Promise<boolean>
-  async encrypt(value: string): Promise<string> {
+  async encrypt (value: string): Promise<string> {
     return await new Promise(resolve => resolve('hashed_value'))
   }
 }
 
 class AddAccountRepoStub implements AddAccountRepo {
-  async add(accountModel: AddAccountModel): Promise<AccountModel> {
+  async add (accountModel: AddAccountModel): Promise<AccountModel> {
     return {
       id: 'newId',
       ...accountModel
