@@ -1,11 +1,25 @@
-import { AccountModel } from '../../../domain/models/account'
 import { Authentication, AuthenticationModel } from '../../../domain/usecases/authentication'
-import { LoadAccountByEmailRepository } from '../../protocols/load-account-by-email.repo'
+import { LoadAccountByEmailRepository, UpdateTokenRepository } from '../../protocols/db'
+import { Encrypter, TokenGenerator } from '../../protocols/encrypter'
 
 export class DbAuthentication implements Authentication {
-  constructor (private readonly loadAccountByEmailRepo: LoadAccountByEmailRepository) { }
-  async auth (data: AuthenticationModel): Promise<AccountModel | null> {
+  constructor (
+    private readonly loadAccountByEmailRepo: LoadAccountByEmailRepository,
+    private readonly encrypter: Encrypter,
+    private readonly tokenGenerator: TokenGenerator,
+    private readonly tokenRepository: UpdateTokenRepository
+  ) { }
+
+  async auth (data: AuthenticationModel): Promise<string | null> {
     const account = await this.loadAccountByEmailRepo.load(data.email)
-    return account
+    if (account != null) {
+      const isValid = await this.encrypter.checkEncryption(data.password, account?.password)
+      if (isValid) {
+        const token = this.tokenGenerator.generate(account.id)
+        await this.tokenRepository.update(account.id, token)
+        return token
+      }
+    }
+    return null
   }
 }

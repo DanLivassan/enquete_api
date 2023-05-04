@@ -1,5 +1,3 @@
-import { AccountModel } from '../models/account'
-
 export interface AuthenticationModel {
 
   email: string
@@ -7,5 +5,5 @@ export interface AuthenticationModel {
 }
 
 export interface Authentication {
-  auth: (data: AuthenticationModel) => Promise<AccountModel | null>
+  auth: (data: AuthenticationModel) => Promise<string | null>
 }

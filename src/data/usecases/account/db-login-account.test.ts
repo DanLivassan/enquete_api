@@ -1,7 +1,7 @@
 import { AccountModel } from '../../../domain/models/account'
 import { LoginAccountModel } from '../../../domain/usecases/login-account'
-import { Encrypter } from '../../protocols/encrypter'
-import { LoginAccountRepo } from '../../protocols/login-account-repo'
+import { Encrypter } from '../../protocols/encrypter/encrypter'
+import { LoginAccountRepo } from '../../protocols/db/login-account-repo'
 import { DbLoginAccount } from './db-login-account'
 
 const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
