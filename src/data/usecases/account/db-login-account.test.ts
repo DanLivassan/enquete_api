@@ -1,11 +1,11 @@
 import { AccountModel } from '../../../domain/models/account'
 import { LoginAccountModel } from '../../../domain/usecases/login-account'
-import { Encrypter } from '../../protocols/encrypter/encrypter'
+import { HashCompare } from '../../protocols/encrypter/encrypter'
 import { LoginAccountRepo } from '../../protocols/db/login-account-repo'
 import { DbLoginAccount } from './db-login-account'
 
 const accountData = { name: 'name', email: 'email@mail.com', password: 'valid_pass' }
-class EncrypterStub implements Encrypter {
+class HashCompareStub implements HashCompare {
   async encrypt (value: string): Promise<string> {
     return await new Promise(resolve => resolve('hashed_value'))
   }
@@ -23,11 +23,11 @@ class LoginAccountRepoStub implements LoginAccountRepo {
 
 interface SutTypes {
   sut: DbLoginAccount
-  encrypterStub: Encrypter
+  encrypterStub: HashCompare
   loginRepo: LoginAccountRepo
 }
 const makeSut = (): SutTypes => {
-  const encrypterStub = new EncrypterStub()
+  const encrypterStub = new HashCompareStub()
   const loginRepo = new LoginAccountRepoStub()
   const sut = new DbLoginAccount(encrypterStub, loginRepo)
 

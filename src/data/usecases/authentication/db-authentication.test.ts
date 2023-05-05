@@ -1,12 +1,12 @@
 import { AccountModel } from '../../../domain/models/account'
 import { LoadAccountByEmailRepository, UpdateTokenRepository } from '../../protocols/db'
-import { Encrypter, TokenGenerator } from '../../protocols/encrypter'
+import { HashCompare, TokenGenerator } from '../../protocols/encrypter'
 import { DbAuthentication } from './db-authentication'
 
 interface SutProps {
   sut: DbAuthentication
   loadAccountByEmailRepoStub: LoadAccountByEmailRepository
-  hashComparerStub: Encrypter
+  hashComparerStub: HashCompare
   tokenGeneratorStub: TokenGenerator
   tokenRepoStub: UpdateTokenRepository
 }
@@ -21,8 +21,7 @@ const makeSut = (): SutProps => {
       return await Promise.resolve({ email: 'some@mail.com', id: 'id', name: 'name', password: 'hashed_password' })
     }
   }
-  class HashComparerStub implements Encrypter {
-    encrypt: (value: string) => Promise<string>
+  class HashComparerStub implements HashCompare {
     async checkEncryption (value: string, encryptedValud: string): Promise<boolean> {
       return true
     }
