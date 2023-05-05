@@ -1,3 +1,4 @@
+import { UpdateTokenRepository } from '../../../../data/protocols/db'
 import { AddAccountRepo } from '../../../../data/protocols/db/add-account-repo'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email.repo'
 import { LoginAccountRepo } from '../../../../data/protocols/db/login-account-repo'
@@ -6,7 +7,12 @@ import { AddAccountModel } from '../../../../domain/usecases/add-account'
 import { LoginAccountModel } from '../../../../domain/usecases/login-account'
 import { MongoHelper } from '../helpers/mongo-helper'
 
-export class AccountMongoRepository implements AddAccountRepo, LoginAccountRepo, LoadAccountByEmailRepository {
+export class AccountMongoRepository implements AddAccountRepo, LoginAccountRepo, LoadAccountByEmailRepository, UpdateTokenRepository {
+  async update (accountId: string, token: string): Promise<void> {
+    const accountsCollection = MongoHelper.getCollection('accounts')
+    await accountsCollection.findOneAndUpdate({ $where: { id: accountId } }, { token })
+  }
+
   async load (email: string): Promise<AccountModel | null> {
     const accountsCollection = MongoHelper.getCollection('accounts')
     const accountModel = await accountsCollection.findOne({ $where: { email } })
